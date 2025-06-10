@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div th:replace="fragments/common :: header"></div>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Latest Blog Posts</h1>
+
+        <div th:if="${#lists.isEmpty(posts)}" class="alert alert-info">
+            No posts found yet. Be the first to create one!
+        </div>
+
+        <div th:each="post : ${posts}" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}" class="text-dark">Post Title</a>
+                </h2>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    By <span th:text="${post.authorName}">Author</span> on <span th:text="${#temporals.format(post.createdAt, 'dd-MM-yyyy HH:mm')}">Date</span>
+                </h6>
+
+                <div th:if="${!#sets.isEmpty(post.tags)}" class="mb-2">
+                    <span class="badge badge-secondary mr-1" th:each="tag : ${post.tags}" th:text="${tag.name}">Tag Name</span>
+                </div>
+                <div class="card-text" th:utext="${post.content}">Post content goes here.</div>
+                <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-outline-primary btn-sm mt-2">Read More</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/common :: footer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

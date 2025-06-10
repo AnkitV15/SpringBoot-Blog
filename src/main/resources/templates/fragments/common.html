@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Common Fragments</title>
+</head>
+<body>
+
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" th:href="@{/}">Simple Blog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/posts/user}">My Posts</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/posts/create}">Create New Post</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <span class="navbar-text mr-3">
+                            Welcome, <span sec:authentication="name"></span>!
+                        </span>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" class="form-inline">
+                            <button type="submit" class="btn btn-outline-light my-2 my-sm-0">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div th:fragment="footer">
+        <footer class="footer mt-auto py-3 bg-light">
+            <div class="container text-center">
+                <span class="text-muted">&copy; 2025 Simple Blog Platform. All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-editor {
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="fragments/common :: header"></div>
+
+    <div class="container mt-4">
+        <h2>Edit Post</h2>
+        <form id="postForm" th:action="@{/posts/edit/{id}(id=${post.id})}" method="post" th:object="${post}">
+            <input type="hidden" th:field="*{id}" />
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" th:field="*{title}" required>
+            </div>
+            <div class="form-group">
+                <label for="editor">Content:</label>
+                <div id="editor" style="height: 300px;"></div>
+                <textarea id="content" name="content" style="display:none;" th:field="*{content}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Post</button>
+            <a th:href="@{/posts/user}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        console.log("JavaScript is running on edit.html!");
+
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Load existing content into Quill when the page loads
+        var initialContent = document.getElementById('content').value;
+        if (initialContent) {
+            quill.root.innerHTML = initialContent;
+            console.log("Quill initialized with existing content.");
+        }
+
+        var form = document.getElementById('postForm');
+        console.log("Form element selected:", form);
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                // REMOVE this line: event.preventDefault(); // Keep this for now to see logs
+
+                console.log("--- Form Submission Started ---"); // Log message changed
+
+                var contentInput = document.getElementById('content');
+
+                if (!contentInput) {
+                    console.error("Error: Hidden textarea with ID 'content' not found!");
+                    return; // Stop execution if critical element is missing
+                } else {
+                    console.log("Found hidden textarea:", contentInput);
+                    console.log("Textarea initial value (before Quill update):", contentInput.value);
+                }
+
+                var quillContent = quill.root.innerHTML;
+                console.log("Content from Quill editor:", quillContent);
+
+                contentInput.value = quillContent;
+                console.log("Value set to hidden textarea (after Quill update):", contentInput.value);
+
+                console.log("--- Form Submission Ended (Allowed Default Submission) ---"); // Log message changed
+
+                // REMOVE this line: form.submit(); // Manually submit the form after all JS logic
+            });
+        } else {
+            console.error("Error: Post form with ID 'postForm' not found!");
+        }
+    </script>
+    <div th:replace="fragments/common :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/wrapper/maven-wrapper.jar
+
+#IDE
+.project
+.classpath
+.settings
+
+#Generated Files
+*.log
+logs/
+log/
+tmp/
+temp/
+upload/
+
+# Project-specific/Sensitive
+.env
+application*.properties
+application*.yml
+*.jks
+
+# embedded databsr files
+*.mv.db
+*.trace.db
