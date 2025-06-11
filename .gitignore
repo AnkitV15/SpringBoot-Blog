@@ -13,6 +13,7 @@ buildNumber.properties
 .project
 .classpath
 .settings
+.vscode
 
 #Generated Files
 *.log
